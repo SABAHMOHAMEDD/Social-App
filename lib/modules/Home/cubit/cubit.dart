@@ -13,7 +13,9 @@ import 'package:social_app/modules/feeds/feeds_screen.dart';
 import 'package:social_app/modules/profile/profile_screen.dart';
 import 'package:social_app/modules/settings/settings_screen.dart';
 
+import '../../../my_chats/pages/all_chats_screen.dart';
 import '../../../shared/components/constant.dart';
+import '../../../shared/network/local/cache_helper.dart';
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(IntialState()); // need intial state in the super
@@ -39,7 +41,7 @@ class SocialCubit extends Cubit<SocialStates> {
   int currentIndex = 0;
   List<Widget> Screens = [
     FeedScreen(),
-    ChatScreen(),
+    MyChatsScreen(),
     ProfileScreen(),
     SettingScreen()
   ];
@@ -272,4 +274,25 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(GetPostsErrorState(error));
     });
   }
+
+
+  List<UserModel> users = [];
+
+  void GetAllUsers() {
+    users = [];
+    emit(GetAllUsersLoadingState());
+    FirebaseFirestore.instance.collection('users').get().then((value) {
+      value.docs.forEach((element) {
+        if (element.data()['uId'] != CacheHelper.getData(key: 'uId')) {
+          users.add(UserModel.fromJson(element.data()));
+        }
+      });
+      emit(GetAllUsersSuccessState());
+    }).catchError((error) {
+      emit(GetAllUsersFailureState(errorMessage: error.toString()));
+      print(error.toString());
+    });
+  }
+
+
 }

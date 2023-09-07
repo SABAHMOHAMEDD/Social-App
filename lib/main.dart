@@ -14,10 +14,13 @@ import 'package:social_app/shared/network/local/cache_helper.dart';
 import 'package:social_app/shared/network/remote/dio_helper.dart';
 import 'package:social_app/theme/mytheme.dart';
 
+import 'check_internet_connection/cubit/internet_cubit.dart';
 import 'firebase_options.dart';
 import 'modules/Home/cubit/cubit.dart';
 import 'modules/Home/layout.dart';
 import 'modules/login/cubit/cubit.dart';
+import 'my_chats/cubit/private_chats_cubit.dart';
+import 'my_chats/pages/private_chat_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -49,12 +52,16 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
         providers: [
           BlocProvider(create: (BuildContext context) => LoginCubit()),
+
+          BlocProvider(create: (BuildContext context) => PrivateChatsCubit()),
           BlocProvider(
             create: (BuildContext context) => SocialCubit()
               ..GetUserData()
               ..GetPosts(),
           ),
-        ],
+    BlocProvider(create: (context) => InternetCubit()..checkConnection())
+
+    ],
         child: MaterialApp(
           debugShowCheckedModeBanner: false,
           theme: MyTheme.LightTheme,
@@ -70,6 +77,7 @@ class MyApp extends StatelessWidget {
             ProfileScreen.RouteName: (_) => ProfileScreen(),
             NewPostScreen.RouteName: (_) => NewPostScreen(),
             EditProfileScreen.RouteName: (_) => EditProfileScreen(),
+            PrivateChatScreen.routeName: (_) => PrivateChatScreen(),
           },
           home: startWidget,
         ));

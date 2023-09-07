@@ -38,6 +38,12 @@ dependencies:
   animated_bottom_navigation_bar: ^1.0.1
   carousel_slider: ^4.1.1
   image_picker: ^0.8.6
+  another_flushbar: ^1.12.30
+  connectivity_plus: ^4.0.2
+  loading_animation_widget: ^1.2.0+4
+
+
+
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -85,3 +85,14 @@ class PostUpLoadImagePickedByGalleryErrorState extends SocialStates {}
 class PostUpLoadImagePickedByGalleryLoadingState extends SocialStates {}
 
 class RemoveImagePostState extends SocialStates {}
+class GetAllUsersInitState extends SocialStates {}
+
+class GetAllUsersLoadingState extends SocialStates {}
+
+class GetAllUsersSuccessState extends SocialStates {}
+
+class GetAllUsersFailureState extends SocialStates {
+  String? errorMessage;
+
+  GetAllUsersFailureState({required this.errorMessage});
+}

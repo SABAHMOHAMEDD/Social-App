@@ -80,7 +80,7 @@ class FeedScreen extends StatelessWidget {
                                           decoration: BoxDecoration(
                                             border: Border.all(
                                                 width: 1, color: Colors.grey),
-                                            borderRadius: BorderRadius.all(
+                                            borderRadius: const BorderRadius.all(
                                                 Radius.circular(15)),
                                           ),
 

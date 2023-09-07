@@ -109,7 +109,7 @@ class EditProfileScreen extends StatelessWidget {
                                         backgroundColor:
                                             Colors.grey.withOpacity(0.8),
                                         radius: 15,
-                                        child: Icon(
+                                        child: const Icon(
                                           IconBroken.Camera,
                                           color: Colors.white,
                                         )),
