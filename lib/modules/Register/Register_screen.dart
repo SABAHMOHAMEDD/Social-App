@@ -29,6 +29,8 @@ class RegisterScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: Colors.white,
+
             body: Center(
               child: SingleChildScrollView(
                 child: Form(
@@ -54,6 +56,7 @@ class RegisterScreen extends StatelessWidget {
                           height: 10,
                         ),
                         defaultFormField(
+                            cursorColor: Colors.black,
                             controller: nameController,
                             type: TextInputType.name,
                             onChange: () {},
@@ -69,6 +72,7 @@ class RegisterScreen extends StatelessWidget {
                           height: 20,
                         ),
                         defaultFormField(
+                            cursorColor: Colors.black,
                             controller: emailController,
                             type: TextInputType.emailAddress,
                             onChange: () {},
@@ -84,6 +88,7 @@ class RegisterScreen extends StatelessWidget {
                           height: 20,
                         ),
                         defaultFormField(
+                            cursorColor: Colors.black,
                             controller: passwordController,
                             type: TextInputType.visiblePassword,
                             onChange: () {},
@@ -99,6 +104,7 @@ class RegisterScreen extends StatelessWidget {
                           height: 15,
                         ),
                         defaultFormField(
+                            cursorColor: Colors.black,
                             controller: phoneController,
                             type: TextInputType.phone,
                             onChange: () {},
@@ -115,20 +121,26 @@ class RegisterScreen extends StatelessWidget {
                         ),
                         ConditionalBuilder(
                             condition: state is! RegisterLoadinState,
-                            builder: (context) => defaultButton(
-                                function: () {
-                                  if (formKey.currentState!.validate()) {
-                                    RegisterCubit.get(context).userRegister(
-                                        name: nameController.text,
-                                        email: emailController.text,
-                                        password: passwordController.text,
-                                        phone: phoneController.text);
-                                  }
-                                },
-                                text: 'Register',
-                                background: Colors.black),
-                            fallback: (context) =>
-                                Center(child: CircularProgressIndicator())),
+                            builder: (context) => Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 25),
+                                  child: defaultButton(
+                                      colorText: Colors.white,
+                                      function: () {
+                                        if (formKey.currentState!.validate()) {
+                                          RegisterCubit.get(context)
+                                              .userRegister(
+                                                  name: nameController.text,
+                                                  email: emailController.text,
+                                                  password:
+                                                      passwordController.text,
+                                                  phone: phoneController.text);
+                                        }
+                                      },
+                                      text: 'Register',
+                                      background: Colors.black),
+                                ),
+                            fallback: (context) => const Center(
+                                child: CircularProgressIndicator())),
                         SizedBox(
                           height: 10,
                         ),

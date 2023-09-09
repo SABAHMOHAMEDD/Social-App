@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/modules/login/cubit/states.dart';
 
+import '../../../shared/network/local/cache_helper.dart';
+
 class LoginCubit extends Cubit<LoginStates> {
   LoginCubit() : super(LoginIntialState()); // need intial state in the super
 
@@ -30,6 +32,10 @@ class LoginCubit extends Cubit<LoginStates> {
         .signInWithEmailAndPassword(email: email, password: password)
         .then((value) {
       print(value.user?.email);
+      CacheHelper.saveData(key: "uId", value: value.user!.uid);
+      print("??????????????????????????????????????");
+      print(CacheHelper.getData(key: 'uId'));
+
       emit(LoginSuccessState(value.user!.uid));
     }).catchError((error) {
       emit(LoginErrorState(error.toString()));

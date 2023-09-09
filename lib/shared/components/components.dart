@@ -3,22 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:social_app/theme/mytheme.dart';
 
+import '../../constants.dart';
+
 Widget defaultButton({
-  double width = double.infinity,
-  double? height,
   required Color background,
   bool isUpperCase = true,
-  double radius = 0.0,
   required Function? function(),
   required String text,
   Color? colorText,
 }) =>
     Container(
-      height: height,
-      width: width,
+      width: double.infinity,
       child: MaterialButton(
         elevation: 0,
-        color: MyTheme.primaryColor,
         onPressed: function,
         child: Text(
           isUpperCase ? text.toUpperCase() : text,
@@ -26,8 +23,9 @@ Widget defaultButton({
         ),
       ),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(radius),
-          color: MyTheme.primaryColor),
+        borderRadius: BorderRadius.circular(12),
+        color: Color(0xFFAA77FF),
+      ),
     );
 
 Widget defaultFormField(
@@ -53,17 +51,21 @@ Widget defaultFormField(
         labelText: label,
         prefixIcon: Icon(
           prefix,
-          color: MyTheme.primaryColor,
+          color: KPrimaryColor,
         ),
         suffixIcon: suffix != null ? Icon(suffix) : null,
         border: OutlineInputBorder(
-          borderSide: BorderSide(color: MyTheme.primaryColor, width: 1),
-        ),
+            borderSide: BorderSide(color: KPrimaryColor, width: 1),
+            borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.primaryColor, width: 1)),
+            borderSide: BorderSide(color:KPrimaryColor, width: 1),
+            borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
-            borderSide: BorderSide(color: MyTheme.primaryColor, width: 1)),
-        labelStyle: TextStyle(color: MyTheme.primaryColor),
+            borderSide: BorderSide(color: KPrimaryColor, width: 1),
+borderRadius: BorderRadius.circular(12)
+
+),
+        labelStyle: TextStyle(color: MyTheme.primaryColor.withOpacity(0.8),fontSize: 15),
       ),
     );
 

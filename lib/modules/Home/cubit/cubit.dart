@@ -16,6 +16,7 @@ import 'package:social_app/modules/settings/settings_screen.dart';
 import '../../../my_chats/pages/all_chats_screen.dart';
 import '../../../shared/components/constant.dart';
 import '../../../shared/network/local/cache_helper.dart';
+import '../../new_post/new_post_screen.dart';
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(IntialState()); // need intial state in the super
@@ -31,6 +32,8 @@ class SocialCubit extends Cubit<SocialStates> {
       print(value.data());
 
       model = UserModel.fromJson(value.data()!);
+      CacheHelper.saveData(key: "uId", value: model!.uId);
+
       emit(GetUserSuccessState());
     }).catchError((error) {
       print(error.toString());
@@ -42,14 +45,16 @@ class SocialCubit extends Cubit<SocialStates> {
   List<Widget> Screens = [
     FeedScreen(),
     MyChatsScreen(),
+    NewPostScreen(),
+    SettingScreen(),
     ProfileScreen(),
-    SettingScreen()
   ];
   List<String> title = [
     'Home',
     'Chat',
-    'Profile',
+    'Create Post',
     'Settings',
+    'Profile',
   ];
 
   void ChangebottomNavBar(int index) {
@@ -263,6 +268,7 @@ class SocialCubit extends Cubit<SocialStates> {
   List<PostModel> posts = [];
 
   void GetPosts() {
+    posts = [];
     emit(GetPostsLoadingState());
 
     FirebaseFirestore.instance.collection('posts').get().then((value) {
@@ -274,7 +280,6 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(GetPostsErrorState(error));
     });
   }
-
 
   List<UserModel> users = [];
 
@@ -293,6 +298,4 @@ class SocialCubit extends Cubit<SocialStates> {
       print(error.toString());
     });
   }
-
-
 }

@@ -5,6 +5,8 @@ import 'package:social_app/modules/Home/cubit/states.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/styles/IconBroken.dart';
 
+import '../../constants.dart';
+
 class Layout extends StatelessWidget {
   static const String RouteName = 'layout';
 
@@ -29,19 +31,26 @@ class Layout extends StatelessWidget {
                 ),
                 body: cubit.Screens[cubit.currentIndex],
                 bottomNavigationBar: BottomNavigationBar(
+                  selectedIconTheme: IconThemeData(color: KPrimaryColor),
+                  selectedItemColor: KPrimaryColor,
+                  //    showUnselectedLabels: false,
+                  backgroundColor: KPrimaryColor,
+                  type: BottomNavigationBarType.shifting,
                   currentIndex: cubit.currentIndex,
                   onTap: (index) {
                     cubit.ChangebottomNavBar(index);
                   },
-                  items: [
+                  items: const [
                     BottomNavigationBarItem(
                         icon: Icon(IconBroken.Home), label: 'Home'),
                     BottomNavigationBarItem(
                         icon: Icon(IconBroken.Chat), label: 'Chat'),
                     BottomNavigationBarItem(
-                        icon: Icon(IconBroken.Profile), label: 'Profile'),
+                        icon: Icon(Icons.add), label: 'Post'),
                     BottomNavigationBarItem(
                         icon: Icon(IconBroken.Setting), label: 'Settings'),
+                    BottomNavigationBarItem(
+                        icon: Icon(IconBroken.Profile), label: 'Profile'),
                   ],
                 ),
               );

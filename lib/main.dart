@@ -19,6 +19,7 @@ import 'firebase_options.dart';
 import 'modules/Home/cubit/cubit.dart';
 import 'modules/Home/layout.dart';
 import 'modules/login/cubit/cubit.dart';
+import 'modules/story/story_screen.dart';
 import 'my_chats/cubit/private_chats_cubit.dart';
 import 'my_chats/pages/private_chat_screen.dart';
 
@@ -57,7 +58,7 @@ class MyApp extends StatelessWidget {
           BlocProvider(
             create: (BuildContext context) => SocialCubit()
               ..GetUserData()
-              ..GetPosts(),
+              ,
           ),
     BlocProvider(create: (context) => InternetCubit()..checkConnection())
 
@@ -78,6 +79,7 @@ class MyApp extends StatelessWidget {
             NewPostScreen.RouteName: (_) => NewPostScreen(),
             EditProfileScreen.RouteName: (_) => EditProfileScreen(),
             PrivateChatScreen.routeName: (_) => PrivateChatScreen(),
+            StoryScreen.RouteName: (_) => StoryScreen(),
           },
           home: startWidget,
         ));

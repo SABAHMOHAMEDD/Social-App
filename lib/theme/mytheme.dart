@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../constants.dart';
+
 class MyTheme {
   static final Color primaryColor = Colors.black;
 
   static final ThemeData LightTheme = ThemeData(
+    scaffoldBackgroundColor: KSecondryColor,
+
     backgroundColor: Colors.white,
     fontFamily: 'j',
     primaryColor: Colors.black,
     appBarTheme: AppBarTheme(
-        backwardsCompatibility: true,
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.white,
             statusBarIconBrightness: Brightness.dark),
@@ -44,11 +47,10 @@ class MyTheme {
 
   static final ThemeData DarkTheme = ThemeData(
     primaryColor: Colors.white,
-    scaffoldBackgroundColor: Colors.white24,
+    scaffoldBackgroundColor: KSecondryColor,
     backgroundColor: Colors.black12,
     fontFamily: 'j',
     appBarTheme: AppBarTheme(
-        backwardsCompatibility: false,
         systemOverlayStyle: SystemUiOverlayStyle(
             statusBarColor: Colors.white,
             statusBarIconBrightness: Brightness.dark),

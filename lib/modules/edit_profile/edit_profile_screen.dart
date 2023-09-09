@@ -2,6 +2,7 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
+import '../../constants.dart';
 import '../../shared/components/components.dart';
 import '../../shared/styles/IconBroken.dart';
 import '../Home/cubit/cubit.dart';
@@ -212,7 +213,29 @@ class EditProfileScreen extends StatelessWidget {
                         },
                         label: 'Phone',
                         prefix: IconBroken.Message),
-                  )
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      IconButton(
+                        onPressed: () {
+                          SignOut(context);
+                        },
+                        icon: Icon(
+                          Icons.exit_to_app,
+                          size: 45,
+                          color: KPrimaryColor.withOpacity(0.8),
+                        ),
+                      ),
+                      Text(
+                        'Sign Out',
+                        style: TextStyle(color: KPrimaryColor.withOpacity(.8)),
+                      ),
+                    ],
+                  ),
                 ],
               ),
             ),

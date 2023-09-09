@@ -35,6 +35,7 @@ class LoginScreen extends StatelessWidget {
         },
         builder: (context, state) {
           return Scaffold(
+            backgroundColor: Colors.white,
             body: Center(
               child: SingleChildScrollView(
                 child: Form(
@@ -60,6 +61,7 @@ class LoginScreen extends StatelessWidget {
                           height: 20,
                         ),
                         defaultFormField(
+                            cursorColor: Colors.black,
                             controller: emailController,
                             type: TextInputType.emailAddress,
                             onChange: () {},
@@ -72,12 +74,10 @@ class LoginScreen extends StatelessWidget {
                             label: 'Email',
                             prefix: Icons.email),
                         SizedBox(
-                          height: 20,
-                        ),
-                        SizedBox(
                           height: 15,
                         ),
                         defaultFormField(
+                            cursorColor: Colors.black,
                             controller: passwordController,
                             type: TextInputType.visiblePassword,
                             onChange: () {},
@@ -94,19 +94,24 @@ class LoginScreen extends StatelessWidget {
                         ),
                         ConditionalBuilder(
                             condition: true,
-                            builder: (context) => defaultButton(
-                                function: () {
-                                  if (formKey.currentState?.validate() ==
-                                      true) {
-                                    LoginCubit.get(context).userLogin(
-                                        email: emailController.text,
-                                        password: passwordController.text);
-                                    //  Navigator.pushReplacementNamed(context, HomeScreen.RouteName);
-
-                                  }
-                                },
-                                text: 'Login',
-                                background: Colors.black),
+                            builder: (context) => Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 25),
+                                  child: defaultButton(
+                                      colorText: Colors.white,
+                                      function: () {
+                                        if (formKey.currentState?.validate() ==
+                                            true) {
+                                          LoginCubit.get(context).userLogin(
+                                              email: emailController.text,
+                                              password:
+                                                  passwordController.text);
+                                          //  Navigator.pushReplacementNamed(context, HomeScreen.RouteName);
+                                        }
+                                      },
+                                      text: 'Login',
+                                      background: Color(0xFFAA77FF)),
+                                ),
                             fallback: (context) =>
                                 Center(child: CircularProgressIndicator())),
                         SizedBox(
@@ -130,7 +135,7 @@ class LoginScreen extends StatelessWidget {
                                 child: const Text(
                                   'Register',
                                   style: TextStyle(
-                                      fontSize: 17, color: Colors.redAccent),
+                                      fontSize: 17, color: Color(0xFFAA77FF)),
                                 ))
                           ],
                         )
