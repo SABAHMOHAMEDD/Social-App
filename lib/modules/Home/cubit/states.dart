@@ -96,3 +96,31 @@ class GetAllUsersFailureState extends SocialStates {
 
   GetAllUsersFailureState({required this.errorMessage});
 }
+
+class CreateCommentSuccessState extends SocialStates {}
+
+class CreateCommentLoadingState extends SocialStates {}
+
+class CreateCommentErrorState extends SocialStates {
+  String error;
+
+  CreateCommentErrorState(this.error);
+}
+
+class GetCommentSuccessState extends SocialStates {}
+
+class GetCommentLoadingState extends SocialStates {}
+
+class GetCommentErrorState extends SocialStates {
+  String error;
+
+  GetCommentErrorState(this.error);
+}
+
+class LikePostSuccessState extends SocialStates {}
+
+class LikePostErrorState extends SocialStates {
+  String error;
+
+  LikePostErrorState(this.error);
+}

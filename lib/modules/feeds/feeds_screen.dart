@@ -3,17 +3,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app/models/post_model.dart';
-import 'package:social_app/modules/new_post/new_post_screen.dart';
 import 'package:social_app/modules/profile/profile_screen.dart';
 import 'package:social_app/shared/styles/IconBroken.dart';
 
 import '../../constants.dart';
 import '../Home/cubit/cubit.dart';
 import '../Home/cubit/states.dart';
+import '../comments/comment_sheet.dart';
 import '../story/story_screen.dart';
 
 class FeedScreen extends StatelessWidget {
   static const String RouteName = 'feeds';
+  var commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -143,7 +144,8 @@ class FeedScreen extends StatelessWidget {
                             ListView.separated(
                               itemBuilder: (context, index) => buildPostItem(
                                   SocialCubit.get(context).posts[index],
-                                  context),
+                                  context,
+                                  index),
                               physics: const NeverScrollableScrollPhysics(),
                               separatorBuilder: (context, index) =>
                                   const SizedBox(
@@ -172,7 +174,7 @@ class FeedScreen extends StatelessWidget {
     );
   }
 
-  Widget buildPostItem(PostModel postModel, context) => Padding(
+  Widget buildPostItem(PostModel postModel, context, index) => Padding(
         padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Card(
           shape: RoundedRectangleBorder(
@@ -283,10 +285,17 @@ class FeedScreen extends StatelessWidget {
                             padding: EdgeInsets.symmetric(vertical: 5),
                             child: Row(
                               children: [
-                                Icon(
-                                  IconBroken.Heart,
-                                  size: 16,
-                                  color: KPrimaryColor,
+                                InkWell(
+                                  child: Icon(
+                                    IconBroken.Heart,
+                                    size: 16,
+                                    color: KPrimaryColor,
+                                  ),
+                                  onTap: () {
+                                    SocialCubit.get(context).LikePost(
+                                        SocialCubit.get(context)
+                                            .postsId[index]);
+                                  },
                                 ),
                                 SizedBox(
                                   width: 5,
@@ -323,7 +332,13 @@ class FeedScreen extends StatelessWidget {
                               ],
                             ),
                           ),
-                          onTap: () {},
+                          onTap: () {
+                            // SocialCubit.get(context).GetComments(
+                            //     SocialCubit.get(context).postsId[index]);
+                            // Navigator.pushNamed(
+                            //     context, CommentSheet.RouteName);
+                            openBottomSheet(context, index);
+                          },
                         ),
                       )
                     ],
@@ -337,56 +352,21 @@ class FeedScreen extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                 ),
-                Row(
-                  children: [
-                    Expanded(
-                      child: InkWell(
-                        child: Row(
-                          children: [
-                            CircleAvatar(
-                              radius: 18,
-                              backgroundImage: NetworkImage(
-                                  SocialCubit.get(context).model?.image ?? ""),
-                            ),
-                            const SizedBox(
-                              width: 15,
-                            ),
-                            Text(
-                              'write a comment',
-                              style: Theme.of(context)
-                                  .textTheme
-                                  .caption
-                                  ?.copyWith(height: 1.4),
-                            ),
-                          ],
-                        ),
-                        onTap: () {},
-                      ),
-                    ),
-                    InkWell(
-                      child: Row(
-                        children: [
-                          Icon(
-                            IconBroken.Heart,
-                            size: 16,
-                            color: KPrimaryColor,
-                          ),
-                          SizedBox(
-                            width: 5,
-                          ),
-                          Text(
-                            'like',
-                            style: Theme.of(context).textTheme.caption,
-                          )
-                        ],
-                      ),
-                      onTap: () {},
-                    )
-                  ],
-                )
               ],
             ),
           ),
         ),
       );
+
+  void openBottomSheet(context, index) {
+    showModalBottomSheet(
+        backgroundColor: Colors.white,
+        context: context,
+        builder: (
+          buildcontext,
+        ) {
+          return CommentSheet();
+        },
+        isScrollControlled: true);
+  }
 }
