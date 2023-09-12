@@ -59,6 +59,7 @@ class MyChatsScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             CircleAvatar(
+                              backgroundColor: KPrimaryColor.withOpacity(0.5),
                               radius: 28,
                               backgroundImage: NetworkImage(
                                   SocialCubit.get(context).users[index].image ??

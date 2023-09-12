@@ -10,123 +10,211 @@ import '../../constants.dart';
 import '../Home/cubit/cubit.dart';
 import '../Home/cubit/states.dart';
 import '../comments/comment_sheet.dart';
-import '../story/story_screen.dart';
+import '../new_post/new_post_screen.dart';
+import '../story/pages/create_story.dart';
+import '../story/pages/story_screen.dart';
 
 class FeedScreen extends StatelessWidget {
   static const String RouteName = 'feeds';
-  var commentController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Builder(
       builder: (BuildContext context) {
-        SocialCubit.get(context).GetPosts();
+        // SocialCubit.get(context).GetComments('mKhmDvZm7AbPcwe6uPlr');
         return BlocConsumer<SocialCubit, SocialStates>(
             listener: (context, state) {},
             builder: (context, state) {
               var model = SocialCubit.get(context).model;
+              var storymodel = SocialCubit.get(context).stories;
               return Column(
                 children: [
                   SizedBox(
-                    height: 10,
+                    height: 60,
+                  ),
+                  ConditionalBuilder(
+                    condition: SocialCubit.get(context).stories.isNotEmpty,
+                    builder: (BuildContext context) {
+                      return Expanded(
+                        flex: 2,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            Expanded(
+                                child: Column(
+                              children: [
+                                Stack(
+                                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                                    alignment: AlignmentDirectional.bottomStart,
+                                    children: [
+                                      Stack(
+                                        clipBehavior:
+                                            Clip.antiAliasWithSaveLayer,
+                                        alignment: AlignmentDirectional.center,
+                                        children: [
+                                          CircleAvatar(
+                                              radius: 32,
+                                              backgroundColor: Theme.of(context)
+                                                  .scaffoldBackgroundColor,
+                                              child: CircleAvatar(
+                                                backgroundImage: NetworkImage(model
+                                                        ?.image ??
+                                                    "https://img.freepik.com/free-photo/young-student-woman-with-backpack-bag-holding-hand-with-thumb-up-gesture-isolated-white-wall_231208-11498.jpg?w=996&t=st=1669296316~exp=1669296916~hmac=783161709f71002b0e0825e73eea54c12d0d9a7157be9658d3b3fe3d05c51215"),
+                                                backgroundColor:
+                                                    Colors.deepPurple.shade300,
+                                                radius: 32,
+                                              )),
+                                          IconButton(
+                                            onPressed: () {
+                                              Navigator.pushNamed(context,
+                                                  CreateStoryScreen.RouteName);
+                                            },
+                                            icon: Padding(
+                                              padding: EdgeInsets.all(5),
+                                              child: CircleAvatar(
+                                                  backgroundColor: Colors
+                                                      .grey.shade400
+                                                      .withOpacity(0.8),
+                                                  radius: 15,
+                                                  child: Icon(
+                                                    Icons.add,
+                                                    color: Colors.black,
+                                                    size: 19,
+                                                  )),
+                                            ),
+                                          )
+                                        ],
+                                      )
+                                    ]),
+                                Text("You")
+                              ],
+                            )),
+                            Expanded(
+                              flex: 4,
+                              child: ListView.builder(
+                                  clipBehavior: Clip.antiAliasWithSaveLayer,
+                                  shrinkWrap: true,
+                                  itemCount: storymodel.length,
+                                  scrollDirection: Axis.horizontal,
+                                  itemBuilder: (context, index) {
+                                    return InkWell(
+                                      onTap: () {
+                                        Navigator.pushNamed(
+                                            context, StoryScreen.RouteName);
+                                      },
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: EdgeInsets.only(left: 4),
+                                            child: CircleAvatar(
+                                              backgroundImage: NetworkImage(
+                                                  storymodel[index]
+                                                          .avatarImage ??
+                                                      ""),
+                                              backgroundColor:
+                                                  KPrimaryColor.withOpacity(.5),
+                                              radius: 32,
+                                            ),
+                                          ),
+                                          Text(
+                                              storymodel[index].name ?? "Name ")
+                                        ],
+                                      ),
+                                    );
+                                  }),
+                            ),
+                          ],
+                        ),
+                      );
+                    },
+                    fallback: (context) => Center(
+                        child: LoadingAnimationWidget.inkDrop(
+                      color: KPrimaryColor.withOpacity(.8),
+                      size: 32,
+                    )),
                   ),
                   Expanded(
-                    flex: 2,
-                    child: ListView.builder(
-                        shrinkWrap: true,
-                        itemCount: 12,
-                        scrollDirection: Axis.horizontal,
-                        itemBuilder: (context, index) {
-                          return InkWell(
-                            onTap: () {
-                              Navigator.pushNamed(
-                                  context, StoryScreen.RouteName);
-                            },
-                            child: Padding(
-                              padding: EdgeInsets.only(left: 15),
-                              child: CircleAvatar(
-                                backgroundColor: KPrimaryColor.withOpacity(.5),
-                                radius: 32,
+                    flex: 1,
+                    child: Padding(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      child: Container(
+                        margin: EdgeInsets.symmetric(horizontal: 4),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    child: CircleAvatar(
+                                        backgroundColor:
+                                            KPrimaryColor.withOpacity(.5),
+                                        radius: 25,
+                                        backgroundImage: NetworkImage(model
+                                                ?.image ??
+                                            "https://img.freepik.com/free-photo/young-student-woman-with-backpack-bag-holding-hand-with-thumb-up-gesture-isolated-white-wall_231208-11498.jpg?w=996&t=st=1669296316~exp=1669296916~hmac=783161709f71002b0e0825e73eea54c12d0d9a7157be9658d3b3fe3d05c51215")),
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, ProfileScreen.RouteName);
+                                    },
+                                  ),
+                                  const SizedBox(
+                                    width: 20,
+                                  ),
+                                  InkWell(
+                                    child: Container(
+                                      height: 45,
+                                      width: 260,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                            width: 1, color: Colors.grey),
+                                        borderRadius: const BorderRadius.all(
+                                            Radius.circular(15)),
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 12, vertical: 12),
+                                        child: Text(
+                                          'write a Post...',
+                                          style: Theme.of(context)
+                                              .textTheme
+                                              .caption
+                                              ?.copyWith(
+                                                  height: 1.4,
+                                                  color: Theme.of(context)
+                                                      .primaryColor),
+                                        ),
+                                      ),
+                                    ),
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                          context, NewPostScreen.RouteName);
+                                    },
+                                  ),
+                                ],
                               ),
                             ),
-                          );
-                        }),
+                            InkWell(
+                              child: const Icon(
+                                IconBroken.Image,
+                                size: 36,
+                                color: KPrimaryColor,
+                              ),
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, NewPostScreen.RouteName);
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
                   ),
-                  // Expanded(
-                  //   flex: 1,
-                  //   child: Padding(
-                  //     padding: EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  //     child: Container(
-                  //       margin: EdgeInsets.symmetric(horizontal: 4),
-                  //       child: Row(
-                  //         children: [
-                  //           Expanded(
-                  //             child: Row(
-                  //               children: [
-                  //                 InkWell(
-                  //                   child: CircleAvatar(
-                  //                       backgroundColor:
-                  //                           Theme.of(context).backgroundColor,
-                  //                       radius: 25,
-                  //                       backgroundImage: NetworkImage(model
-                  //                               ?.image ??
-                  //                           "https://img.freepik.com/free-photo/young-student-woman-with-backpack-bag-holding-hand-with-thumb-up-gesture-isolated-white-wall_231208-11498.jpg?w=996&t=st=1669296316~exp=1669296916~hmac=783161709f71002b0e0825e73eea54c12d0d9a7157be9658d3b3fe3d05c51215")),
-                  //                   onTap: () {
-                  //                     Navigator.pushNamed(
-                  //                         context, ProfileScreen.RouteName);
-                  //                   },
-                  //                 ),
-                  //                 const SizedBox(
-                  //                   width: 15,
-                  //                 ),
-                  //                 // InkWell(
-                  //                 //   child: Container(
-                  //                 //     //height: 35,
-                  //                 //     width: 260,
-                  //                 //     decoration: BoxDecoration(
-                  //                 //       border: Border.all(
-                  //                 //           width: 1, color: Colors.grey),
-                  //                 //       borderRadius: const BorderRadius.all(
-                  //                 //           Radius.circular(15)),
-                  //                 //     ),
-                  //                 //
-                  //                 //     child: Padding(
-                  //                 //       padding: const EdgeInsets.all(8.0),
-                  //                 //       child: Text(
-                  //                 //         'write a Post...',
-                  //                 //         style: Theme.of(context)
-                  //                 //             .textTheme
-                  //                 //             .caption
-                  //                 //             ?.copyWith(
-                  //                 //                 height: 1.4,
-                  //                 //                 color: Theme.of(context)
-                  //                 //                     .primaryColor),
-                  //                 //       ),
-                  //                 //     ),
-                  //                 //   ),
-                  //                 //   onTap: () {
-                  //                 //     Navigator.pushNamed(
-                  //                 //         context, NewPostScreen.RouteName);
-                  //                 //   },
-                  //                 // ),
-                  //               ],
-                  //             ),
-                  //           ),
-                  //           // InkWell(
-                  //           //   child: const Icon(
-                  //           //     IconBroken.Image,
-                  //           //     size: 24,
-                  //           //     color: Colors.redAccent,
-                  //           //   ),
-                  //           //   onTap: () {},
-                  //           // ),
-                  //         ],
-                  //       ),
-                  //     ),
-                  //   ),
-                  // ),
                   Expanded(
-                    flex: 12,
+                    flex: 9,
                     child: ConditionalBuilder(
                       condition: SocialCubit.get(context).posts.isNotEmpty,
                       builder: (context) => SingleChildScrollView(
@@ -196,8 +284,8 @@ class FeedScreen extends StatelessWidget {
                       child: CircleAvatar(
                         backgroundColor: Theme.of(context).backgroundColor,
                         radius: 25,
-                        backgroundImage: NetworkImage(
-                            SocialCubit.get(context).model?.image ?? ""),
+                        backgroundImage:
+                            NetworkImage(postModel.avatarImage ?? ""),
                       ),
                       onTap: () {
                         Navigator.pushNamed(context, ProfileScreen.RouteName);
@@ -228,7 +316,8 @@ class FeedScreen extends StatelessWidget {
                             ],
                           ),
                           Text(
-                            postModel.dateTime ?? "",
+                            // postModel.dateTime ??
+                            "1h",
                             style: Theme.of(context)
                                 .textTheme
                                 .caption
@@ -258,7 +347,6 @@ class FeedScreen extends StatelessWidget {
                     color: Colors.grey[300],
                   ),
                 ),
-                // SizedBox(height: 5,),
                 Text(postModel.text ?? "",
                     style: Theme.of(context).textTheme.subtitle1),
                 SizedBox(
@@ -333,25 +421,25 @@ class FeedScreen extends StatelessWidget {
                             ),
                           ),
                           onTap: () {
+                            openBottomSheet(context, index);
                             // SocialCubit.get(context).GetComments(
                             //     SocialCubit.get(context).postsId[index]);
                             // Navigator.pushNamed(
                             //     context, CommentSheet.RouteName);
-                            openBottomSheet(context, index);
                           },
                         ),
                       )
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 10),
-                  child: Container(
-                    width: double.infinity,
-                    height: 1,
-                    color: Colors.grey[300],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.only(bottom: 10),
+                //   child: Container(
+                //     width: double.infinity,
+                //     height: 1,
+                //     color: Colors.grey[300],
+                //   ),
+                // ),
               ],
             ),
           ),
@@ -360,13 +448,12 @@ class FeedScreen extends StatelessWidget {
 
   void openBottomSheet(context, index) {
     showModalBottomSheet(
-        backgroundColor: Colors.white,
-        context: context,
-        builder: (
-          buildcontext,
-        ) {
-          return CommentSheet();
-        },
-        isScrollControlled: true);
+      isScrollControlled: true,
+      isDismissible: true,
+      context: context,
+      builder: (BuildContext context) {
+        return CommentSheet(index);
+      },
+    );
   }
 }

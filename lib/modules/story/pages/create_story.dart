@@ -1,32 +1,33 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constants.dart';
-import '../../core/show_snack_bar.dart';
-import '../../shared/components/components.dart';
-import '../../shared/styles/IconBroken.dart';
-import '../Home/cubit/cubit.dart';
-import '../Home/cubit/states.dart';
-import '../profile/profile_screen.dart';
+import '../../../constants.dart';
+import '../../../core/show_snack_bar.dart';
+import '../../../shared/components/components.dart';
+import '../../../shared/styles/IconBroken.dart';
+import '../../Home/cubit/cubit.dart';
+import '../../Home/cubit/states.dart';
+import '../../Home/layout.dart';
 
-class NewPostScreen extends StatelessWidget {
-  static const String RouteName = 'new_post';
+class CreateStoryScreen extends StatelessWidget {
+  static const String RouteName = 'CreateStoryScreen';
   var textController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(listener: (context, state) {
-      if (state is CreatePostSuccessState) {
-        showSnackBar(context, "Post Added Successfully");
+      if (state is CreateStorySuccessState) {
+        SocialCubit.get(context).GetStories();
 
-        SocialCubit.get(context).GetPosts();
-        SocialCubit.get(context).GetUserPosts();
+        showSnackBar(context, "Story Added Successfully");
+
+        Navigator.pushNamed(context, Layout.RouteName);
       }
     }, builder: (context, state) {
       return Scaffold(
         appBar: defaultAppBar(
             context: context,
-            // title: 'Create Post',
+            // title: 'Create Story',
             leading: IconButton(
               onPressed: () {
                 Navigator.pop(context);
@@ -41,16 +42,16 @@ class NewPostScreen extends StatelessWidget {
                 onPressed: () {
                   var now = DateTime.now();
 
-                  if (SocialCubit.get(context).postImage != null) {
-                    SocialCubit.get(context).UploadPostImage(
+                  if (SocialCubit.get(context).storyImage != null) {
+                    SocialCubit.get(context).UploadStoryImage(
                         dateTime: now.toString(), text: textController.text);
                   } else {
-                    SocialCubit.get(context).CreatePost(
+                    SocialCubit.get(context).CreateStory(
                         dateTime: now.toString(), text: textController.text);
                   }
                 },
                 child: Text(
-                  'Post',
+                  'Add',
                   style: TextStyle(fontSize: 16, color: Colors.green.shade300),
                 ),
               ),
@@ -60,57 +61,15 @@ class NewPostScreen extends StatelessWidget {
             ]),
         body: Column(
           children: [
-            if (state is CreatePostLoadingState ||
-                state is PostUpLoadImagePickedByGalleryLoadingState)
+            if (state is CreateStoryLoadingState ||
+                state is StoryUpLoadImagePickedByGalleryLoadingState)
               LinearProgressIndicator(
                 color: KPrimaryColor,
               ),
             // if(state is CreatePostLoadingState)
 
             SizedBox(
-              height: 10,
-            ),
-            Padding(
-              padding: const EdgeInsets.all(20),
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  InkWell(
-                    child: CircleAvatar(
-                      backgroundColor: Theme.of(context).backgroundColor,
-                      radius: 25,
-                      backgroundImage: NetworkImage(SocialCubit.get(context)
-                              .model!
-                              .image ??
-                          "https://www.flaticon.com/free-icon/user_1077063?term=person&page=1&position=4&origin=search&related_id=1077063"),
-                    ),
-                    onTap: () {
-                      Navigator.pushNamed(context, ProfileScreen.RouteName);
-                    },
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                  Expanded(
-                    child: Column(
-                      children: [
-                        Row(
-                          children: [
-                            Text(
-                              SocialCubit.get(context).model!.name ?? "",
-                              style: TextStyle(fontSize: 17),
-                            ),
-                          ],
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(
-                    width: 15,
-                  ),
-                ],
-              ),
+              height: 30,
             ),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 40),
@@ -121,7 +80,7 @@ class NewPostScreen extends StatelessWidget {
                     border: InputBorder.none),
               ),
             ),
-            if (SocialCubit.get(context).postImage != null)
+            if (SocialCubit.get(context).storyImage != null)
               Expanded(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -133,14 +92,14 @@ class NewPostScreen extends StatelessWidget {
                       decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           image: DecorationImage(
-                            image:
-                                FileImage(SocialCubit.get(context)!.postImage!),
+                            image: FileImage(
+                                SocialCubit.get(context)!.storyImage!),
                             fit: BoxFit.cover,
                           )),
                     ),
                     IconButton(
                       onPressed: () {
-                        SocialCubit.get(context).removePostImage();
+                        SocialCubit.get(context).removeStoryImage();
                       },
                       icon: CircleAvatar(
                           backgroundColor: Colors.grey.withOpacity(0.7),
@@ -161,7 +120,7 @@ class NewPostScreen extends StatelessWidget {
                 Expanded(
                   child: TextButton(
                       onPressed: () {
-                        SocialCubit.get(context).getPostImageByGallery();
+                        SocialCubit.get(context).getStoryImageByGallery();
                       },
                       child: Column(
                         children: [
@@ -174,19 +133,6 @@ class NewPostScreen extends StatelessWidget {
                         ],
                       )),
                 ),
-                Expanded(
-                  child: TextButton(
-                      onPressed: () {},
-                      child: Column(
-                        children: [
-                          Icon(IconBroken.Profile, color: KPrimaryColor),
-                          Text(
-                            'Tag People',
-                            style: TextStyle(color: KPrimaryColor),
-                          )
-                        ],
-                      )),
-                )
               ],
             )
           ],

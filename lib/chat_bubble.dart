@@ -61,7 +61,7 @@ class ChatBubbleFriend extends StatelessWidget {
       alignment: Alignment.bottomLeft,
       child: Container(
         decoration: BoxDecoration(
-            color: KSecondryColor,
+            color: Colors.grey.shade200,
             borderRadius: const BorderRadius.only(
                 topRight: Radius.circular(14),
                 bottomRight: Radius.circular(14),

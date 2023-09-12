@@ -5,6 +5,7 @@ import 'package:social_app/modules/login/cubit/states.dart';
 
 import '../../shared/components/components.dart';
 import '../../shared/network/local/cache_helper.dart';
+import '../Home/cubit/cubit.dart';
 import '../Home/layout.dart';
 import '../Register/Register_screen.dart';
 import 'cubit/cubit.dart';
@@ -31,6 +32,9 @@ class LoginScreen extends StatelessWidget {
             CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
               Navigator.pushReplacementNamed(context, Layout.RouteName);
             });
+            SocialCubit.get(context).GetUserPosts();
+
+            SocialCubit.get(context).GetUserData();
           }
         },
         builder: (context, state) {

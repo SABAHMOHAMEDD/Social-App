@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/modules/Home/layout.dart';
 
 import '../../shared/components/components.dart';
+import '../Home/cubit/cubit.dart';
 import 'cubit/cubit.dart';
 import 'cubit/states.dart';
 
@@ -23,6 +24,9 @@ class RegisterScreen extends StatelessWidget {
         listener: (context, state) {
           if (state is CreateUserSuccessState) {
             {
+              SocialCubit.get(context).GetUserData();
+              SocialCubit.get(context).GetUserPosts();
+
               Navigator.pushReplacementNamed(context, Layout.RouteName);
             }
           }
@@ -30,7 +34,6 @@ class RegisterScreen extends StatelessWidget {
         builder: (context, state) {
           return Scaffold(
             backgroundColor: Colors.white,
-
             body: Center(
               child: SingleChildScrollView(
                 child: Form(

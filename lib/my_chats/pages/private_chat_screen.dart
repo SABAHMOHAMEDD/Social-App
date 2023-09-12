@@ -109,17 +109,18 @@ class PrivateChatScreen extends StatelessWidget {
                               duration: const Duration(seconds: 3),
                               backgroundColor: Colors.red.shade400,
                             ).show(context);
-                          } else if (state is ConnectedState) {
-                            Flushbar(
-                              flushbarStyle: FlushbarStyle.FLOATING,
-                              margin: const EdgeInsets.all(25),
-                              flushbarPosition: FlushbarPosition.TOP,
-                              borderRadius: BorderRadius.circular(25),
-                              message: state.message,
-                              duration: const Duration(seconds: 3),
-                              backgroundColor: Colors.green.shade400,
-                            ).show(context);
                           }
+                          // else if (state is ConnectedState) {
+                          //   Flushbar(
+                          //     flushbarStyle: FlushbarStyle.FLOATING,
+                          //     margin: const EdgeInsets.all(25),
+                          //     flushbarPosition: FlushbarPosition.TOP,
+                          //     borderRadius: BorderRadius.circular(25),
+                          //     message: state.message,
+                          //     duration: const Duration(seconds: 3),
+                          //     backgroundColor: Colors.green.shade400,
+                          //   ).show(context);
+                          // }
                         },
                         builder: (context, state) {
                           return TextField(

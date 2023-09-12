@@ -5,6 +5,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/Register/cubit/states.dart';
 
+import '../../../shared/network/local/cache_helper.dart';
+
 class RegisterCubit extends Cubit<RegisterStates> {
   RegisterCubit()
       : super(RegisterIntialState()); // need intial state in the super
@@ -35,12 +37,14 @@ class RegisterCubit extends Cubit<RegisterStates> {
         .createUserWithEmailAndPassword(email: email, password: password)
         .then((value) {
       print(value.user?.email);
+      CacheHelper.saveData(key: "uId", value: value.user!.uid);
+
       print(value.user?.uid);
       UserCreate(
           name: name,
           email: email,
           phone: phone,
-          uId: value.user!.uid); // save data in firestore
+          uId: CacheHelper.getData(key: 'uId')); // save data in firestore
     }).catchError((error) {
       emit(RegisterErrorState(error.toString()));
     });
@@ -57,7 +61,7 @@ class RegisterCubit extends Cubit<RegisterStates> {
         name: name,
         email: email,
         phone: phone,
-        uId: uId,
+        uId: CacheHelper.getData(key: 'uId'),
         cover:
             'https://img.freepik.com/free-photo/young-student-woman-with-backpack-bag-holding-hand-with-thumb-up-gesture-isolated-white-wall_231208-11498.jpg?w=996&t=st=1669296316~exp=1669296916~hmac=783161709f71002b0e0825e73eea54c12d0d9a7157be9658d3b3fe3d05c51215',
         bio: 'write your bio',

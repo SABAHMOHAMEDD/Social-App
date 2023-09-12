@@ -1,8 +1,13 @@
+import 'package:social_app/models/user_model.dart';
+
 abstract class SocialStates {}
 
 class IntialState extends SocialStates {}
 
-class GetUserSuccessState extends SocialStates {}
+class GetUserSuccessState extends SocialStates {
+  UserModel userModel;
+  GetUserSuccessState(this.userModel);
+}
 
 class GetUserLoadingState extends SocialStates {}
 
@@ -20,6 +25,15 @@ class GetPostsErrorState extends SocialStates {
   final String error;
 
   GetPostsErrorState(this.error);
+}
+class GetUserPostsSuccessState extends SocialStates {}
+
+class GetUserPostsLoadingState extends SocialStates {}
+
+class GetUserPostsErrorState extends SocialStates {
+  final String error;
+
+  GetUserPostsErrorState(this.error);
 }
 
 class ChageBottomNavState extends SocialStates {}
@@ -84,7 +98,23 @@ class PostUpLoadImagePickedByGalleryErrorState extends SocialStates {}
 
 class PostUpLoadImagePickedByGalleryLoadingState extends SocialStates {}
 
+
+
+
+
+
+class StoryImagePickedByGallerySuccessState extends SocialStates {}
+class StoryUpLoadImagePickedByGallerySuccessState extends SocialStates {}
+
+class StoryUpLoadImagePickedByGalleryErrorState extends SocialStates {}
+
+class StoryUpLoadImagePickedByGalleryLoadingState extends SocialStates {}
+
+
+
 class RemoveImagePostState extends SocialStates {}
+class RemoveImageStoryState extends SocialStates {}
+
 class GetAllUsersInitState extends SocialStates {}
 
 class GetAllUsersLoadingState extends SocialStates {}
@@ -123,4 +153,28 @@ class LikePostErrorState extends SocialStates {
   String error;
 
   LikePostErrorState(this.error);
+}
+
+
+
+class CreateStorySuccessState extends SocialStates {}
+
+class CreateStoryLoadingState extends SocialStates {}
+
+class CreateStoryErrorState extends SocialStates {
+  String error;
+
+  CreateStoryErrorState(this.error);
+}
+
+
+
+class GetStorySuccessState extends SocialStates {}
+
+class GetStoryLoadingState extends SocialStates {}
+
+class GetStoryErrorState extends SocialStates {
+  final String error;
+
+  GetStoryErrorState(this.error);
 }

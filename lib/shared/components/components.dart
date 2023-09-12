@@ -58,31 +58,30 @@ Widget defaultFormField(
             borderSide: BorderSide(color: KPrimaryColor, width: 1),
             borderRadius: BorderRadius.circular(12)),
         enabledBorder: OutlineInputBorder(
-            borderSide: BorderSide(color:KPrimaryColor, width: 1),
+            borderSide: BorderSide(color: KPrimaryColor, width: 1),
             borderRadius: BorderRadius.circular(12)),
         focusedBorder: OutlineInputBorder(
             borderSide: BorderSide(color: KPrimaryColor, width: 1),
-borderRadius: BorderRadius.circular(12)
-
-),
-        labelStyle: TextStyle(color: MyTheme.primaryColor.withOpacity(0.8),fontSize: 15),
+            borderRadius: BorderRadius.circular(12)),
+        labelStyle: TextStyle(
+            color: MyTheme.primaryColor.withOpacity(0.8), fontSize: 15),
       ),
     );
 
 PreferredSizeWidget defaultAppBar({
   required BuildContext context,
-  String? title,
+  // String? title,
   List<Widget>? actions,
   IconButton? leading,
 }) =>
     AppBar(
-      leading: leading,
+      // leading: leading,
       actions: actions,
       titleSpacing: 5,
-      title: Text(
-        title!,
-        style: TextStyle(color: Theme.of(context).primaryColor),
-      ),
+      // title: Text(
+      //   title!,
+      //   style: TextStyle(color: KPrimaryColor.withOpacity(0.8), fontSize: 24),
+      // ),
       elevation: 0,
     );
 

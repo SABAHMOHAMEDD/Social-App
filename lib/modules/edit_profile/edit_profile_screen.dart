@@ -28,7 +28,7 @@ class EditProfileScreen extends StatelessWidget {
           return Scaffold(
             appBar: defaultAppBar(
               context: context,
-              title: 'Edit Profile',
+              // title: 'Edit Profile',
               leading: IconButton(
                 onPressed: () {
                   Navigator.pop(context);
@@ -42,9 +42,10 @@ class EditProfileScreen extends StatelessWidget {
                 MaterialButton(
                   onPressed: () {
                     SocialCubit.get(context).UpdateUserImagesOrData(
-                        name: namecontroller.text,
-                        phone: phonecontroller.text,
-                        bio: biocontroller.text);
+                      name: namecontroller.text,
+                      phone: phonecontroller.text,
+                      bio: biocontroller.text,
+                    );
                   },
                   child: Text(
                     'Update',
@@ -60,7 +61,9 @@ class EditProfileScreen extends StatelessWidget {
               child: Column(
                 children: [
                   if (state is UpdateUserDataLoadingState)
-                    LinearProgressIndicator(),
+                    LinearProgressIndicator(
+                      color: KPrimaryColor,
+                    ),
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
@@ -135,6 +138,8 @@ class EditProfileScreen extends StatelessWidget {
                                             backgroundImage: NetworkImage(
                                                 '${model?.image}')),
                                         fallback: (context) => CircleAvatar(
+                                            backgroundColor:
+                                            KPrimaryColor.withOpacity(0.5),
                                             radius: 61,
                                             backgroundImage:
                                                 FileImage(profileImage!)),
@@ -215,7 +220,7 @@ class EditProfileScreen extends StatelessWidget {
                         prefix: IconBroken.Message),
                   ),
                   SizedBox(
-                    height: 30,
+                    height: 150,
                   ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,

@@ -10,13 +10,12 @@ import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/Home/cubit/states.dart';
 import 'package:social_app/modules/feeds/feeds_screen.dart';
 import 'package:social_app/modules/profile/profile_screen.dart';
-import 'package:social_app/modules/settings/settings_screen.dart';
 
 import '../../../models/comment_model.dart';
+import '../../../models/story_model.dart';
 import '../../../my_chats/pages/all_chats_screen.dart';
 import '../../../shared/components/constant.dart';
 import '../../../shared/network/local/cache_helper.dart';
-import '../../new_post/new_post_screen.dart';
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(IntialState()); // need intial state in the super
@@ -28,13 +27,17 @@ class SocialCubit extends Cubit<SocialStates> {
 
   void GetUserData() {
     emit(GetUserLoadingState());
-    FirebaseFirestore.instance.collection('users').doc(uId).get().then((value) {
+    FirebaseFirestore.instance
+        .collection('users')
+        .doc(CacheHelper.getData(key: 'uId'))
+        .get()
+        .then((value) {
       print(value.data());
 
       model = UserModel.fromJson(value.data()!);
       CacheHelper.saveData(key: "uId", value: model!.uId);
 
-      emit(GetUserSuccessState());
+      emit(GetUserSuccessState(model!));
     }).catchError((error) {
       print(error.toString());
       emit(GetUserErrorState(error.toString()));
@@ -45,25 +48,25 @@ class SocialCubit extends Cubit<SocialStates> {
   List<Widget> Screens = [
     FeedScreen(),
     MyChatsScreen(),
-    NewPostScreen(),
-    SettingScreen(),
+    // NewPostScreen(),
     ProfileScreen(),
   ];
-  List<String> title = [
-    'Home',
-    'Chat',
-    'Create Post',
-    'Settings',
-    'Profile',
-  ];
+  // List<String> title = [
+  //   'Home',
+  //   'Chat',
+  //   // 'Create Post',
+  //   'Profile',
+  // ];
 
   void ChangebottomNavBar(int index) {
     currentIndex = index;
     emit(ChageBottomNavState());
   }
 
-  File? profileimage;
   final picker = ImagePicker();
+
+  File? profileimage;
+  File? coverImage;
 
   Future<void> getProfileImageByGallery() async {
     XFile? imageFileProfile =
@@ -74,29 +77,26 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(ProfileImagePickedByGallerySuccessState());
   }
 
-  Future<void> getProfileImageByCam() async {
-    XFile? imageFileProfile =
-        await picker.pickImage(source: ImageSource.camera);
-    if (imageFileProfile == null) return;
-    profileimage = File(imageFileProfile.path);
-    emit(ProfileImagePickedByCamSuccessState());
-  }
-
-  File? coverImage;
-
   Future<void> getCoverImageByGallery() async {
     XFile? imageFileCover = await picker.pickImage(source: ImageSource.gallery);
     if (imageFileCover == null) return;
     coverImage = File(imageFileCover.path);
     emit(CoverImagePickedByGallerySuccessState());
   }
+// Future<void> getProfileImageByCam() async {
+  //   XFile? imageFileProfile =
+  //       await picker.pickImage(source: ImageSource.camera);
+  //   if (imageFileProfile == null) return;
+  //   profileimage = File(imageFileProfile.path);
+  //   emit(ProfileImagePickedByCamSuccessState());
+  // }
 
-  Future<void> getCoverImageByCam() async {
-    XFile? imageFileCover = await picker.pickImage(source: ImageSource.camera);
-    if (imageFileCover == null) return;
-    coverImage = File(imageFileCover.path);
-    emit(CoverImagePickedByCamSuccessState());
-  }
+  // Future<void> getCoverImageByCam() async {
+  //   XFile? imageFileCover = await picker.pickImage(source: ImageSource.camera);
+  //   if (imageFileCover == null) return;
+  //   coverImage = File(imageFileCover.path);
+  //   emit(CoverImagePickedByCamSuccessState());
+  // }
 
   //upload image to firebase storage
   // then have the url to send it to firebase firestore in the update func
@@ -249,7 +249,7 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(CreatePostLoadingState());
     PostModel postModel = PostModel(
         name: model?.name,
-        uId: model?.uId,
+        uId: CacheHelper.getData(key: 'uId'),
         dateTime: dateTime,
         text: text,
         avatarImage: model?.image,
@@ -272,16 +272,70 @@ class SocialCubit extends Cubit<SocialStates> {
   String? currentPostId;
 
   void GetPosts() {
-    posts = [];
     emit(GetPostsLoadingState());
-
+    posts = [];
     FirebaseFirestore.instance.collection('posts').get().then((value) {
-      emit(GetPostsSuccessState());
       value.docs.forEach((element) {
-        posts.add(PostModel.fromJson(element.data()));
+        posts = [];
+
+        element.reference.collection('likes').get().then((value) {
+          likes = [];
+          // like collection is in posts collection
+          // like collection contain ids of users that do like this post
+          // add no of likes which is no of docs in likes collection
+          likes.add(value.docs.length);
+          print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+          print(likes);
+          print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+          // post id is here in that list but i cant see it y3ny
+          postsId.add(element.id);
+
+          posts.add(PostModel.fromJson(element.data()));
+          emit(GetPostsSuccessState());
+        }).catchError((error) {
+          emit(GetPostsErrorState(error));
+        });
       });
     }).catchError((error) {
       emit(GetPostsErrorState(error));
+    });
+  }
+
+  List<PostModel> userposts = [];
+  List<String> userpostsId = [];
+  PostModel? userpostModel;
+  List<int> userlikes = [];
+  String? usercurrentPostId;
+
+  void GetUserPosts() {
+    emit(GetUserPostsLoadingState());
+    userposts = [];
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
+      value.docs.forEach((element) {
+        if (element.data()['uId'] == CacheHelper.getData(key: 'uId')) {
+          userposts.add(PostModel.fromJson(element.data()));
+          element.reference.collection('likes').get().then((value) {
+            userlikes = [];
+            // like collection is in posts collection
+            // like collection contain ids of users that do like this post
+            // add no of likes which is no of docs in likes collection
+            userlikes.add(value.docs.length);
+            print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+            print(userlikes);
+            print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+            // post id is here in that list but i cant see it y3ny
+            userpostsId.add(element.id);
+
+            emit(GetUserPostsSuccessState());
+          }).catchError((error) {
+            emit(GetUserPostsErrorState(error));
+          });
+        }
+      });
+    }).catchError((error) {
+      emit(GetUserPostsErrorState(error));
     });
   }
 
@@ -291,6 +345,8 @@ class SocialCubit extends Cubit<SocialStates> {
     users = [];
     emit(GetAllUsersLoadingState());
     FirebaseFirestore.instance.collection('users').get().then((value) {
+      users = [];
+
       value.docs.forEach((element) {
         if (element.data()['uId'] != CacheHelper.getData(key: 'uId')) {
           users.add(UserModel.fromJson(element.data()));
@@ -363,7 +419,10 @@ class SocialCubit extends Cubit<SocialStates> {
         .then((value) {
       value.docs.forEach((element) {
         comments.add(value.docs.length);
-        print(comments);
+        print("//////////////////////////////////");
+        print(comments.length);
+        print("//////////////////////////////////");
+
         commentsId.add(element.id);
 
         comment.add(CommentModel.fromJson(element.data()));
@@ -376,32 +435,100 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-//element =post
-//value = comment
-// test(){
-//   FirebaseFirestore.instance.collection('posts').get().then((value) {
-//
-//     value.docs.forEach((element) {
-//       element.reference.collection('comments')
-//           .get()
-//           .then((value) {
-//
-//         postsId.add(element.id);
-//         comments.add(value.docs.length);
-//         print(comments );
-//         // commentsId.add(value.);
-//         comment.add(CommentModel.fromJson(element.data()));
-//         emit(GetCommentSuccessState());
-//
-//       }).catchError((error){
-//         emit(GetCommentErrorState(error));
-//
-//       });
-//
-//     });
-//   }).catchError((error) {
-//     emit(GetCommentErrorState(error));
-//   });
-//
-// }
+  File? storyImage;
+
+  Future<void> getStoryImageByGallery() async {
+    XFile? imageFileStory = await picker.pickImage(source: ImageSource.gallery);
+    if (imageFileStory == null) return;
+    storyImage = File(imageFileStory.path);
+    emit(StoryImagePickedByGallerySuccessState());
+  }
+
+  void removeStoryImage() {
+    storyImage = null;
+    emit(RemoveImageStoryState());
+  }
+
+  void UploadStoryImage({
+    @required dateTime,
+    @required text,
+  }) {
+    emit(StoryUpLoadImagePickedByGalleryLoadingState());
+    FirebaseStorage.instance
+        .ref()
+        .child('stories/${Uri.file(storyImage?.path ?? "").pathSegments.last}')
+        .putFile(storyImage!)
+        .then((value) {
+      emit(StoryUpLoadImagePickedByGallerySuccessState());
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+        CreateStory(text: text, dateTime: dateTime, storyImage: value);
+      }).catchError((error) {
+        emit(StoryUpLoadImagePickedByGalleryErrorState());
+      });
+    }).catchError((error) {
+      emit(StoryUpLoadImagePickedByGalleryErrorState());
+    });
+  }
+
+  List<StoryModel> stories = [];
+  List<String> storiesId = [];
+  StoryModel? storiesModel;
+  String? currentstoriesId;
+
+  void CreateStory({
+    @required dateTime,
+    @required text,
+    String? storyImage,
+    String? avatarImage,
+  }) {
+    emit(CreateStoryLoadingState());
+    StoryModel storiesModel = StoryModel(
+        name: model?.name,
+        uId: CacheHelper.getData(key: 'uId'),
+        dateTime: dateTime,
+        text: text,
+        avatarImage: model?.image,
+        postImage: storyImage ?? "");
+
+    FirebaseFirestore.instance
+        .collection("story")
+        .add(storiesModel.toJson())
+        .then((value) {
+      emit(CreateStorySuccessState());
+    }).catchError((error) {
+      emit(CreateStoryErrorState(error.toString()));
+    });
+  }
+
+  void GetStories() {
+    emit(GetStoryLoadingState());
+    stories = [];
+    FirebaseFirestore.instance.collection('story').get().then((value) {
+      value.docs.forEach((element) {
+        stories = [];
+
+        element.reference.collection('likes').get().then((value) {
+          likes = [];
+          // like collection is in posts collection
+          // like collection contain ids of users that do like this post
+          // add no of likes which is no of docs in likes collection
+          likes.add(value.docs.length);
+          print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+          print(likes);
+          print("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");
+
+          // post id is here in that list but i cant see it y3ny
+          storiesId.add(element.id);
+
+          stories.add(StoryModel.fromJson(element.data()));
+          emit(GetStorySuccessState());
+        }).catchError((error) {
+          emit(GetStoryErrorState(error));
+        });
+      });
+    }).catchError((error) {
+      emit(GetStoryErrorState(error));
+    });
+  }
 }
