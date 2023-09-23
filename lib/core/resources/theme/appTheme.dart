@@ -1,14 +1,9 @@
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import '../../core.dart';
 
-import '../constants.dart';
-
-class MyTheme {
+class AppTheme {
   static final Color primaryColor = Colors.black;
-
   static final ThemeData LightTheme = ThemeData(
     scaffoldBackgroundColor: KSecondryColor,
-
     backgroundColor: Colors.white,
     fontFamily: 'j',
     primaryColor: Colors.black,

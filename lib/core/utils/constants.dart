@@ -1,21 +1,13 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:social_app/shared/network/local/cache_helper.dart';
 
-import 'modules/login/login_screen.dart';
+import '../../modules/login/login_screen.dart';
 
-const String KLogo = "assets/images/lovemessage.png";
 const String usersCollection = "users";
 
 const String privateChatCollection = "chats";
 const String privateMessagesCollection = "messages";
-const Color KPrimaryColor = Color(0xFFAA77FF);
-const Color KSecondryColor = Colors.white;
-// const Color KSecondryColor = Color(0xFFF5EBE0);
-const Color KAppBarColor = Color(0xFFF5EBE0);
 
-const Color KScaffoldColor = Colors.white;
 const String kCreatedAt = "createdAt";
 final String? uId = CacheHelper.getData(key: 'uId');
 

@@ -1,9 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:social_app/my_chats/pages/private_chat_screen.dart';
 
-import '../../constants.dart';
+import '../../core/core.dart';
 import '../../modules/Home/cubit/cubit.dart';
 import '../../modules/Home/cubit/states.dart';
 import '../../shared/network/local/cache_helper.dart';

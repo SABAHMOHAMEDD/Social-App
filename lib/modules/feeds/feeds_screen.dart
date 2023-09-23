@@ -2,11 +2,12 @@ import 'package:conditional_builder_null_safety/conditional_builder_null_safety.
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
+import 'package:social_app/core/core.dart';
 import 'package:social_app/models/post_model.dart';
 import 'package:social_app/modules/profile/profile_screen.dart';
-import 'package:social_app/shared/styles/IconBroken.dart';
+import 'package:social_app/core/resources/IconBroken.dart';
 
-import '../../constants.dart';
+import '../../core/utils/constants.dart';
 import '../Home/cubit/cubit.dart';
 import '../Home/cubit/states.dart';
 import '../comments/comment_sheet.dart';

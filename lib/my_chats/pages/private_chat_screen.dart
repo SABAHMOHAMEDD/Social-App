@@ -1,10 +1,10 @@
 import 'package:another_flushbar/flushbar.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/core/check_internet_connection/cubit/internet_cubit.dart';
 
 import '../../chat_bubble.dart';
-import '../../check_internet_connection/cubit/internet_cubit.dart';
-import '../../constants.dart';
+import '../../core/core.dart';
+import '../../core/utils/constants.dart';
 import '../../models/user_model.dart';
 import '../../shared/network/local/cache_helper.dart';
 import '../cubit/private_chats_cubit.dart';

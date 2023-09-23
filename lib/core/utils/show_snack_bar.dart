@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
-
-import '../constants.dart';
+import '../core.dart';
 
 void showSnackBar(BuildContext context, String message) {
   ScaffoldMessenger.of(context).showSnackBar(SnackBar(

@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:social_app/theme/mytheme.dart';
+import 'package:social_app/core/core.dart';
+import 'package:social_app/core/resources/theme/appTheme.dart';
 
-import '../../constants.dart';
+import '../../core/utils/constants.dart';
 
 Widget defaultButton({
   required Color background,
@@ -47,7 +48,7 @@ Widget defaultFormField(
       validator: validator,
       cursorColor: cursorColor,
       decoration: InputDecoration(
-        suffixIconColor: MyTheme.primaryColor,
+        suffixIconColor: AppTheme.primaryColor,
         labelText: label,
         prefixIcon: Icon(
           prefix,
@@ -64,7 +65,7 @@ Widget defaultFormField(
             borderSide: BorderSide(color: KPrimaryColor, width: 1),
             borderRadius: BorderRadius.circular(12)),
         labelStyle: TextStyle(
-            color: MyTheme.primaryColor.withOpacity(0.8), fontSize: 15),
+            color: AppTheme.primaryColor.withOpacity(0.8), fontSize: 15),
       ),
     );
 
