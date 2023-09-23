@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../constants.dart';
+import '../../core/utils/constants.dart';
 import '../../shared/network/local/cache_helper.dart';
 import '../models/private_message_model.dart';
 import 'private_chats_states.dart';

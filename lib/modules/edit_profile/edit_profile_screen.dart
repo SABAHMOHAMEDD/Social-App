@@ -1,10 +1,11 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/core/core.dart';
 
-import '../../constants.dart';
+import '../../core/utils/constants.dart';
 import '../../shared/components/components.dart';
-import '../../shared/styles/IconBroken.dart';
+import '../../core/resources/IconBroken.dart';
 import '../Home/cubit/cubit.dart';
 import '../Home/cubit/states.dart';
 

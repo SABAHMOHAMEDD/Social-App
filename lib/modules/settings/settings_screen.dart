@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
+import 'package:social_app/core/core.dart';
 
-import '../../constants.dart';
-import '../login/login_screen.dart';
+import '../../core/utils/constants.dart';
 
 class SettingScreen extends StatelessWidget {
   static const String RouteName = 'Settings';

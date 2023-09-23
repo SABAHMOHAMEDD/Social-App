@@ -1,7 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/core/core.dart';
 
-import '../../constants.dart';
 import '../Home/cubit/cubit.dart';
 import '../Home/cubit/states.dart';
 import '../profile/profile_screen.dart';

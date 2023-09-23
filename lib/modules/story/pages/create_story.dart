@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/core/core.dart';
 
-import '../../../constants.dart';
-import '../../../core/show_snack_bar.dart';
+import '../../../core/utils/show_snack_bar.dart';
 import '../../../shared/components/components.dart';
-import '../../../shared/styles/IconBroken.dart';
+import '../../../core/resources/IconBroken.dart';
 import '../../Home/cubit/cubit.dart';
 import '../../Home/cubit/states.dart';
 import '../../Home/layout.dart';
