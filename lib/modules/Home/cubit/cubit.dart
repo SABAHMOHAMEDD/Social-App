@@ -312,8 +312,12 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(GetUserPostsLoadingState());
     userposts = [];
     FirebaseFirestore.instance.collection('posts').get().then((value) {
+      userposts = [];
+
       value.docs.forEach((element) {
         if (element.data()['uId'] == CacheHelper.getData(key: 'uId')) {
+          // userposts = [];
+
           userposts.add(PostModel.fromJson(element.data()));
           element.reference.collection('likes').get().then((value) {
             userlikes = [];
@@ -489,7 +493,7 @@ class SocialCubit extends Cubit<SocialStates> {
         dateTime: dateTime,
         text: text,
         avatarImage: model?.image,
-        postImage: storyImage ?? "");
+        storyImage: storyImage ?? "");
 
     FirebaseFirestore.instance
         .collection("story")
@@ -520,8 +524,13 @@ class SocialCubit extends Cubit<SocialStates> {
 
           // post id is here in that list but i cant see it y3ny
           storiesId.add(element.id);
+          print("oooooooooooooooooooooooooooooooooo");
 
-          stories.add(StoryModel.fromJson(element.data()));
+          print(element.data());
+          if (element.data()['uId'] != CacheHelper.getData(key: 'uId')) {
+            stories.add(StoryModel.fromJson(element.data()));
+          }
+
           emit(GetStorySuccessState());
         }).catchError((error) {
           emit(GetStoryErrorState(error));

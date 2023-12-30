@@ -139,7 +139,7 @@ class EditProfileScreen extends StatelessWidget {
                                                 '${model?.image}')),
                                         fallback: (context) => CircleAvatar(
                                             backgroundColor:
-                                            KPrimaryColor.withOpacity(0.5),
+                                                KPrimaryColor.withOpacity(0.5),
                                             radius: 61,
                                             backgroundImage:
                                                 FileImage(profileImage!)),

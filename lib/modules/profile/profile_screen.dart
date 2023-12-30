@@ -10,7 +10,6 @@ import 'package:social_app/shared/styles/IconBroken.dart';
 
 import '../../models/post_model.dart';
 import '../comments/comment_sheet.dart';
-import '../feeds/feeds_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String RouteName = 'profile';
@@ -19,6 +18,8 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Builder(
       builder: (BuildContext context) {
+        SocialCubit.get(context).GetUserPosts();
+
         Size screenSize = MediaQuery.of(context).size;
 
         return BlocConsumer<SocialCubit, SocialStates>(

@@ -32,109 +32,125 @@ class FeedScreen extends StatelessWidget {
                   SizedBox(
                     height: 60,
                   ),
-                  ConditionalBuilder(
-                    condition: SocialCubit.get(context).stories.isNotEmpty,
-                    builder: (BuildContext context) {
-                      return Expanded(
-                        flex: 2,
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          crossAxisAlignment: CrossAxisAlignment.center,
+                  Expanded(
+                    flex: 2,
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Column(
                           children: [
-                            Expanded(
-                                child: Column(
-                              children: [
-                                Stack(
+                            Stack(
+                                clipBehavior: Clip.antiAliasWithSaveLayer,
+                                alignment: AlignmentDirectional.bottomStart,
+                                children: [
+                                  Stack(
                                     clipBehavior: Clip.antiAliasWithSaveLayer,
-                                    alignment: AlignmentDirectional.bottomStart,
+                                    alignment: AlignmentDirectional.center,
                                     children: [
-                                      Stack(
+                                      CircleAvatar(
+                                          radius: 32,
+                                          backgroundColor: Theme.of(context)
+                                              .scaffoldBackgroundColor,
+                                          child: CircleAvatar(
+                                            backgroundImage: NetworkImage(model
+                                                    ?.image ??
+                                                "https://img.freepik.com/free-photo/young-student-woman-with-backpack-bag-holding-hand-with-thumb-up-gesture-isolated-white-wall_231208-11498.jpg?w=996&t=st=1669296316~exp=1669296916~hmac=783161709f71002b0e0825e73eea54c12d0d9a7157be9658d3b3fe3d05c51215"),
+                                            backgroundColor:
+                                                Colors.deepPurple.shade300,
+                                            radius: 32,
+                                          )),
+                                      IconButton(
+                                        onPressed: () {
+                                          Navigator.pushNamed(
+                                            context,
+                                            CreateStoryScreen.RouteName,
+                                          );
+                                        },
+                                        icon: Padding(
+                                          padding: EdgeInsets.all(5),
+                                          child: CircleAvatar(
+                                              backgroundColor: Colors
+                                                  .grey.shade400
+                                                  .withOpacity(0.8),
+                                              radius: 15,
+                                              child: Icon(
+                                                Icons.add,
+                                                color: Colors.black,
+                                                size: 19,
+                                              )),
+                                        ),
+                                      )
+                                    ],
+                                  )
+                                ]),
+                            Text("You")
+                          ],
+                        )),
+                        ConditionalBuilder(
+                          condition:
+                              SocialCubit.get(context).stories.isNotEmpty,
+                          builder: (BuildContext context) {
+                            return Expanded(
+                              flex: 2,
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Expanded(
+                                    flex: 4,
+                                    child: ListView.builder(
                                         clipBehavior:
                                             Clip.antiAliasWithSaveLayer,
-                                        alignment: AlignmentDirectional.center,
-                                        children: [
-                                          CircleAvatar(
-                                              radius: 32,
-                                              backgroundColor: Theme.of(context)
-                                                  .scaffoldBackgroundColor,
-                                              child: CircleAvatar(
-                                                backgroundImage: NetworkImage(model
-                                                        ?.image ??
-                                                    "https://img.freepik.com/free-photo/young-student-woman-with-backpack-bag-holding-hand-with-thumb-up-gesture-isolated-white-wall_231208-11498.jpg?w=996&t=st=1669296316~exp=1669296916~hmac=783161709f71002b0e0825e73eea54c12d0d9a7157be9658d3b3fe3d05c51215"),
-                                                backgroundColor:
-                                                    Colors.deepPurple.shade300,
-                                                radius: 32,
-                                              )),
-                                          IconButton(
-                                            onPressed: () {
+                                        shrinkWrap: true,
+                                        itemCount: storymodel.length,
+                                        scrollDirection: Axis.horizontal,
+                                        itemBuilder: (context, index) {
+                                          return InkWell(
+                                            onTap: () {
                                               Navigator.pushNamed(context,
-                                                  CreateStoryScreen.RouteName);
+                                                  StoryScreen.RouteName,
+                                                  arguments:
+                                                      SocialCubit.get(context)
+                                                          .stories[index]);
                                             },
-                                            icon: Padding(
-                                              padding: EdgeInsets.all(5),
-                                              child: CircleAvatar(
-                                                  backgroundColor: Colors
-                                                      .grey.shade400
-                                                      .withOpacity(0.8),
-                                                  radius: 15,
-                                                  child: Icon(
-                                                    Icons.add,
-                                                    color: Colors.black,
-                                                    size: 19,
-                                                  )),
+                                            child: Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.start,
+                                              children: [
+                                                Padding(
+                                                  padding:
+                                                      EdgeInsets.only(left: 4),
+                                                  child: CircleAvatar(
+                                                    backgroundImage:
+                                                        NetworkImage(storymodel[
+                                                                    index]
+                                                                .avatarImage ??
+                                                            ""),
+                                                    backgroundColor:
+                                                        KPrimaryColor
+                                                            .withOpacity(.5),
+                                                    radius: 32,
+                                                  ),
+                                                ),
+                                                Text(storymodel[index].name ??
+                                                    "Name ")
+                                              ],
                                             ),
-                                          )
-                                        ],
-                                      )
-                                    ]),
-                                Text("You")
-                              ],
-                            )),
-                            Expanded(
-                              flex: 4,
-                              child: ListView.builder(
-                                  clipBehavior: Clip.antiAliasWithSaveLayer,
-                                  shrinkWrap: true,
-                                  itemCount: storymodel.length,
-                                  scrollDirection: Axis.horizontal,
-                                  itemBuilder: (context, index) {
-                                    return InkWell(
-                                      onTap: () {
-                                        Navigator.pushNamed(
-                                            context, StoryScreen.RouteName);
-                                      },
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.start,
-                                        children: [
-                                          Padding(
-                                            padding: EdgeInsets.only(left: 4),
-                                            child: CircleAvatar(
-                                              backgroundImage: NetworkImage(
-                                                  storymodel[index]
-                                                          .avatarImage ??
-                                                      ""),
-                                              backgroundColor:
-                                                  KPrimaryColor.withOpacity(.5),
-                                              radius: 32,
-                                            ),
-                                          ),
-                                          Text(
-                                              storymodel[index].name ?? "Name ")
-                                        ],
-                                      ),
-                                    );
-                                  }),
-                            ),
-                          ],
+                                          );
+                                        }),
+                                  ),
+                                ],
+                              ),
+                            );
+                          },
+                          fallback: (context) => Center(
+                              child: LoadingAnimationWidget.inkDrop(
+                            color: KPrimaryColor.withOpacity(.8),
+                            size: 32,
+                          )),
                         ),
-                      );
-                    },
-                    fallback: (context) => Center(
-                        child: LoadingAnimationWidget.inkDrop(
-                      color: KPrimaryColor.withOpacity(.8),
-                      size: 32,
-                    )),
+                      ],
+                    ),
                   ),
                   Expanded(
                     flex: 1,

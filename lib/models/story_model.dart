@@ -4,25 +4,25 @@ class StoryModel {
   String? avatarImage;
   String? dateTime;
   String? text;
-  String? postImage;
+  String? storyImage;
 
   StoryModel(
       {this.name,
-        this.uId,
-        this.avatarImage,
-        this.dateTime,
-        this.text,
-        this.postImage});
+      this.uId,
+      this.avatarImage,
+      this.dateTime,
+      this.text,
+      this.storyImage});
 
   StoryModel.fromJson(Map<String, dynamic> json)
       : this(
-    name: json['name'],
-    uId: json['uId'],
-    avatarImage: json['image'],
-    dateTime: json['dateTime'],
-    text: json['text'],
-    postImage: json['postImage'],
-  );
+          name: json['name'],
+          uId: json['uId'],
+          avatarImage: json['image'],
+          dateTime: json['dateTime'],
+          text: json['text'],
+          storyImage: json['storyImage'],
+        );
 
   Map<String, dynamic> toJson() {
     return {
@@ -31,7 +31,7 @@ class StoryModel {
       'image': avatarImage,
       'dateTime': dateTime,
       'text': text,
-      'postImage': postImage
+      'storyImage': storyImage
     };
   }
 }
